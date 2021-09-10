@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect,g
+from flask import Flask, render_template, request, redirect
+from flask import send_file, send_from_directory
 import csv
 
 app = Flask(__name__)
@@ -20,7 +21,7 @@ def write_to_database(data):
         file = database.write (f"\n{name}, {email}, {message}")
 
 def write_to_csv(data):
-    with open ('database.csv',newline='', mode ='a') as database_csv:
+    with open ('database.csv',newline='\n', mode ='a') as database_csv:
         name = data['name']
         email = data['email']
         message = data['message']
@@ -30,11 +31,23 @@ def write_to_csv(data):
 @app.route('/recieved_form', methods=['POST', 'GET'])
 def recieved_form():
     if request.method == 'POST':
-        data = request.form.to_dict()
-        write_to_csv(data)
-        return redirect('/thankyou.html')
+        try:
+            data = request.form.to_dict()
+            write_to_csv(data)
+            return redirect('/thankyou.html')
+        except:"faild to save to database"
     else:
         return 'Something went wrong'
 
+# @app.route('/Resume') 
+# def sendResume():
+#     return send_file('./templates/samuelKamar_Resume.docx',
+#                 mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+#                 attachment_filename='samuelKamar_Resume.docx',
+#                 as_attachment=True)
 
-
+@app.route("/templates/samuelKamar_Resume.docx")
+def download_file(name):
+    return send_from_directory(
+        app.config['UPLOAD_FOLDER'], name, as_attachment=True
+    )
