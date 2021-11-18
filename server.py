@@ -39,15 +39,15 @@ def recieved_form():
     else:
         return 'Something went wrong'
 
-# @app.route('/Resume') 
-# def sendResume():
-#     return send_file('./templates/samuelKamar_Resume.docx',
-#                 mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-#                 attachment_filename='samuelKamar_Resume.docx',
-#                 as_attachment=True)
+@app.route('/Resume') 
+def sendResume():
+    return send_file('./templates/Samuel_Kamar_Resume.pdf',
+                mimetype='application/pdf',
+                attachment_filename='Samuel_Kamar_Resume.pdf',
+                as_attachment=True)
 
-@app.route("/templates/samuelKamar_Resume.docx")
-def download_file(name):
-    return send_from_directory(
-        app.config['UPLOAD_FOLDER'], name, as_attachment=True
-    )
+# @app.route("/templates/Samuel_Kamar.docx")
+# def download_file(name):
+#     return send_from_directory(
+#         app.config['UPLOAD_FOLDER'], name, as_attachment=True
+#     )
